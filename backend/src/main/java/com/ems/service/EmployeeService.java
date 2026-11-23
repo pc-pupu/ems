@@ -3,6 +3,7 @@ package com.ems.service;
 import org.springframework.stereotype.Service;
 
 import com.ems.dto.EmployeeRequest;
+import com.ems.dto.EmployeeResponse;
 import com.ems.entity.Employee;
 import com.ems.repository.EmployeeRepository;
 
@@ -19,7 +20,7 @@ public class EmployeeService {
         return "Employee Service is Working!";
     }
 
-    public Employee createEmployee(EmployeeRequest employeeRequest){
+    public EmployeeResponse createEmployee(EmployeeRequest employeeRequest){
 
         //Check duplicate email
         if(employeeRepository.existsByEmail(employeeRequest.getEmail())){
@@ -37,6 +38,18 @@ public class EmployeeService {
         employee.setDesignation(employeeRequest.getDesignation());
 
         //save into DB
-        return employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        //Convert saved entity to Response DTO
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(savedEmployee.getId());
+        employeeResponse.setFirstName(savedEmployee.getFirstName());
+        employeeResponse.setLastName(savedEmployee.getLastName());
+        employeeResponse.setEmail(savedEmployee.getEmail());
+        employeeResponse.setDepartment(savedEmployee.getDepartment());
+        employeeResponse.setDesignation(savedEmployee.getDesignation());
+        employeeResponse.setCreatedAt(savedEmployee.getCreatedAt());
+        return employeeResponse;
     }
 }
+    
