@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.ems.dto.EmployeeRequest;
 import com.ems.dto.EmployeeResponse;
 import com.ems.entity.Employee;
+import com.ems.exception.DuplicateEmailException;
 import com.ems.repository.EmployeeRepository;
 
 @Service 
@@ -24,7 +25,7 @@ public class EmployeeService {
 
         //Check duplicate email
         if(employeeRepository.existsByEmail(employeeRequest.getEmail())){
-            throw new RuntimeException("Employee email already exist");
+            throw new DuplicateEmailException("Employee email already exist");
         }
 
         //Convert DTO to Entity
