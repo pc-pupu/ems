@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.dto.EmployeeRequest;
-import com.ems.entity.Employee;
+import com.ems.dto.EmployeeResponse;
 import com.ems.service.EmployeeService;
 
 import jakarta.validation.Valid;
@@ -24,8 +24,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
-        Employee savedEmployee = employeeService.createEmployee(employeeRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
+    public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
+        EmployeeResponse employeeResponse = employeeService.createEmployee(employeeRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeResponse);
     }
 }
