@@ -1,7 +1,10 @@
 package com.ems.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +30,11 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
         EmployeeResponse employeeResponse = employeeService.createEmployee(employeeRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<EmployeeResponse>> getAllEmployees(){
+        List<EmployeeResponse> employeeResponse = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employeeResponse);
     }
 }
