@@ -1,5 +1,6 @@
 package com.ems.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import com.ems.dto.EmployeeRequest;
 import com.ems.dto.EmployeeResponse;
 import com.ems.entity.Employee;
 import com.ems.exception.DuplicateEmailException;
+import com.ems.exception.EmployeeNotFoundException;
 import com.ems.repository.EmployeeRepository;
 
 @Service
@@ -70,5 +72,23 @@ public class EmployeeService {
             employeeResponse.setCreatedAt(employee.getCreatedAt());
             return employeeResponse;
         }).collect(Collectors.toList());
+    }
+
+    public EmployeeResponse getEmployeeById(Long id) {
+        
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(employee.getId());
+        employeeResponse.setFirstName(employee.getFirstName());
+        employeeResponse.setLastName(employee.getLastName());
+        employeeResponse.setEmail(employee.getEmail());
+        employeeResponse.setDepartment(employee.getDepartment());
+        employeeResponse.setDesignation(employee.getDesignation());
+        employeeResponse.setCreatedAt(employee.getCreatedAt());
+
+        return employeeResponse;
+
     }
 }

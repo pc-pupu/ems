@@ -34,8 +34,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleEmployeeNotFoundException(EmployeeNotFoundException exception) {
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT.getReasonPhrase(), exception.getMessage(), LocalDateTime.now());
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(), exception.getMessage(), LocalDateTime.now());
         
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiErrorResponse);
     }
