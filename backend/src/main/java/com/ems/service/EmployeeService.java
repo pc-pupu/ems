@@ -75,7 +75,7 @@ public class EmployeeService {
     }
 
     public EmployeeResponse getEmployeeById(Long id) {
-        
+
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
 
@@ -87,6 +87,39 @@ public class EmployeeService {
         employeeResponse.setDepartment(employee.getDepartment());
         employeeResponse.setDesignation(employee.getDesignation());
         employeeResponse.setCreatedAt(employee.getCreatedAt());
+
+        return employeeResponse;
+
+    }
+
+    public EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest){
+        //Find existing employee
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: "+id));
+
+        //Check another employee owns this email
+        if(employeeRepository.existsByEmailAndIdNot(employeeRequest.getEmail(), employee.getId())){
+            throw new DuplicateEmailException("Employee email already exist.");
+        }
+        
+        employee.setFirstName(employeeRequest.getFirstName());
+        employee.setLastName(employeeRequest.getLastName());
+        employee.setEmail(employeeRequest.getEmail());
+        employee.setPhone(employeeRequest.getPhone());
+        employee.setSalary(employeeRequest.getSalary());
+        employee.setDesignation(employeeRequest.getDesignation());
+        employee.setDepartment(employeeRequest.getDepartment());
+
+        // Save update employee
+        Employee updateEmployee = employeeRepository.save(employee);
+
+        // Convert updated entity to Response DTO
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(updateEmployee.getId());
+        employeeResponse.setFirstName(updateEmployee.getFirstName());
+        employeeResponse.setLastName(updateEmployee.getLastName());
+        employeeResponse.setEmail(updateEmployee.getEmail());
+        employeeResponse.setDesignation(updateEmployee.getDesignation());
+        employeeResponse.setDepartment(updateEmployee.getDepartment());
 
         return employeeResponse;
 
